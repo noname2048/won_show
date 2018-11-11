@@ -1,0 +1,42 @@
+<h1 id='landing'>_ _ _</h1>
+<script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="//stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js'>
+</script>
+<script>
+    var wsStart = 'ws://'
+    if (window.location.protocol == 'https:') {
+        wsStart = 'wss://'
+    }
+    var endPoint = wsStart + 'localhost:8000/index'
+    var socket = new WebSocket(endPoint) // ReconnectingWebSocket
+    var land = $('#landing')
+
+    socket.onmessage = function(e) {
+        console.log('get message from server')
+        console.log(e)
+        var dataMsg = e.data
+        land.text(dataMsg)
+    }
+
+    socket.onopen = function(e) {
+        console.log('connected')
+        keep_track = function(){
+            var s_data = {
+                'nt' : 0
+            }
+            console.log('send clinet -> server')
+            socket.send(JSON.stringify(s_data))
+        }
+        setInterval(keep_track, 1000)
+    }
+
+    socket.onerror = function(e) {
+        console.log("error", e)
+    }
+
+    socket.onclose = function(e) {
+        console.log("close", e)
+    }
+</script>
