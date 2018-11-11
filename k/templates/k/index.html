@@ -9,7 +9,7 @@
     if (window.location.protocol == 'https:') {
         wsStart = 'wss://'
     }
-    var endPoint = wsStart + 'localhost:8000/index'
+    var endPoint = wsStart + window.location.host + window.location.pathname
     var socket = new WebSocket(endPoint) // ReconnectingWebSocket
     var land = $('#landing')
 
